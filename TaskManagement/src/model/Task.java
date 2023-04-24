@@ -84,6 +84,7 @@ public class Task {
     }
     
     public double getTime() throws Exception{
+        //validate time
         time = planTo - planFrom;
         if (time>0){
             return time;
