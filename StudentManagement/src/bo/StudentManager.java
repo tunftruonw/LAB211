@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import model.Student;
 import java.util.HashMap;
+import model.Report;
 
 /**
  *
@@ -20,7 +21,7 @@ public class StudentManager {
     public StudentManager() {
         listStudent = new ArrayList<>();
     }
-    
+
     private boolean isSameStudent(Student s1, Student s2) {
         return s1.getId().equalsIgnoreCase(s2.getId())
                 && s1.getStudentName().equalsIgnoreCase(s2.getStudentName())
@@ -33,19 +34,19 @@ public class StudentManager {
             if (isSameStudent(s, student)) {
                 return true;
             }
-            if (s.getId().equals(student.getId())
-                    && !s.getStudentName().equals(student.getStudentName())) {
+            if (s.getId().equalsIgnoreCase(student.getId())
+                    && !s.getStudentName().equalsIgnoreCase(student.getStudentName())) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean createStudent(Student s) throws Exception {
+    public boolean addStudent(Student s) throws Exception {
         if (!checkDuplicate(s)) {
             return listStudent.add(s);
         }
-        throw new Exception("Duplicate Student");
+        throw new Exception("This student is already exist");
     }
 
     public int searchById(String id) {
@@ -57,18 +58,23 @@ public class StudentManager {
         return -1;
     }
 
-    public Student findStudent(String id) throws Exception {
-        int index = searchById(id);
-        if (index != -1) {
-            listStudent.get(index);
+    public ArrayList<Student> findStudent(String id) throws Exception {
+        ArrayList<Student> listFoundStudent = new ArrayList<>();
+        for (Student student : listStudent) {
+            if (student.getId().equalsIgnoreCase(id)) {
+                listFoundStudent.add(student);
+            }
         }
-        throw new Exception("No student found");
+        if (listFoundStudent.isEmpty()) {
+            throw new Exception("No student found");
+        }
+        return listFoundStudent;
     }
 
     public ArrayList<Student> findAndSortStudent(String s) throws Exception {
         ArrayList<Student> listFoundStudent = new ArrayList<>();
         for (Student student : listStudent) {
-            if (student.getStudentName().contains(s)) {
+            if (checkStudentName(s, student)) {
                 listFoundStudent.add(student);
             }
         }
@@ -78,12 +84,18 @@ public class StudentManager {
         }
         throw new Exception("Student code doesn’t exist");
     }
+    
+    public ArrayList<Report> reportStudent(){
+        
+    }
 
     public Student updateCandidate(String id, Student s) throws Exception {
         int index = searchById(id);
         if (index != -1) {
+            if(checkDuplicate(s)){
+                throw new Exception("This student is already existed");
+            }
             return listStudent.set(index, s);
-            //update candidate by index 
         }
         throw new Exception("Student not found!");
     }
@@ -91,6 +103,7 @@ public class StudentManager {
     public Student deleteCandidate(String id) throws Exception {
         int index = searchById(id);
         if (index != -1) {
+            System.out.println("Student deleted successfully");
             return listStudent.remove(index);
             //remove candidate by index
         }
@@ -100,7 +113,7 @@ public class StudentManager {
     private boolean checkStudentName(String name, Student student) {
         String[] listName = student.getStudentName().trim().split("[ ]+");
         for (String s : listName) {
-            if (s.contains(name)) {
+            if (s.equalsIgnoreCase(name)) {
                 return true;
             }
         }

@@ -21,7 +21,7 @@ public class TextUtility {
         while(true){
             System.out.println(mess);
             output = scan.nextLine();
-            if(output.matches(regex)){
+            if(output.matches(regex) && !removeUnnecessaryBlank(output).equalsIgnoreCase("")){
                 return output;
             } else {
                 System.err.println(error);
