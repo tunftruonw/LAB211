@@ -23,10 +23,12 @@ public class TaskInputer {
         task.setName(MyUtils.getStringByRegex("Requirement Name: ", "Invalid name", "[A-Za-z ]+"));
         task.setDate(MyUtils.getDate("Date: ", "Invalid date"));
         task.setTaskTypeId(MyUtils.getInputTaskType());
-        task.setPlanFrom(MyUtils.getDouble("From: ", "Please enter follow format <8-17>.<0 or 5>", "Must in range 8.0-17.0", 8, 17.0));
+        task.setPlanFrom(MyUtils.getDouble("From: ", "Please enter follow format <8-17>.<0 or 5>",
+                "Must in range 8.0-17.0", 8, 17.0));
         while (true) {
             try {
-                task.setPlanTo(MyUtils.getDouble("To: ", "Please enter follow format <8-17>.<0 or 5>", "Must in range 8.0-17.5", 8, 17.5));
+                task.setPlanTo(MyUtils.getDouble("To: ", "Please enter follow format <8-17>.<0 or 5>",
+                        "Must in range 8.0-17.5", 8, 17.5));
                 task.getTime();
                 break;
             } catch (Exception e) {
