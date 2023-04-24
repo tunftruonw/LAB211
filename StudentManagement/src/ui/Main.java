@@ -43,7 +43,8 @@ public class Main {
                     sc.updateOrDeleteStudent();
                     break;
                 case 4:
-
+                    System.out.println("-------------Report student-------------");
+                    sc.displayReport();
                     break;
                 case 5:
                     return;

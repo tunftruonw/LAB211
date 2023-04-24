@@ -3,14 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package model;
-
+import utils.TextUtility;
 /**
  *
  * @author tungs
  */
 public class Report extends Student{
     private int totalCourse;
-    String STRING_FORMAT = "%-15s|%-20s|%-15s|%-10s\n";
+    String STRING_FORMAT = "%-12s | %-20s | %-8s | %-10s\n";
     
     public Report(String id, String studentName, String course, int totalCourse){
         super(id, studentName, course);
@@ -27,6 +27,6 @@ public class Report extends Student{
 
     @Override
     public String toString() {
-        return String.format(STRING_FORMAT, super.getId(), super.getStudentName(), super.getCourseName(), totalCourse );
+        return String.format(STRING_FORMAT, super.getId().toUpperCase(), TextUtility.normalFormName(super.getStudentName()), super.getCourseName(), totalCourse );
     }
 }

@@ -7,6 +7,7 @@ package controller;
 import bo.StudentInputer;
 import bo.StudentManager;
 import java.util.ArrayList;
+import model.Report;
 import model.Student;
 import utils.TextUtility;
 
@@ -66,34 +67,46 @@ public class StudentController {
             number++;
         }
         int studentNo = TextUtility.getInt("Enter student number you want to update or delete: ", "Integer only", "Must in range 1-" + number, 1, number);
-        Student studentChoosen = foundStudent.get(studentNo-1);
-        String choice =TextUtility.getStringByRegex("Do you want to update(U) or delete(D)?", "Invalid", "[UDud]");
-        if (choice.equalsIgnoreCase("d")){
+        Student studentChoosen = foundStudent.get(studentNo - 1);
+        String choice = TextUtility.getStringByRegex("Do you want to update(U) or delete(D)?", "Invalid", "[UDud]");
+        if (choice.equalsIgnoreCase("d")) {
             studentManager.deleteCandidate(studentChoosen.getId());
+            System.out.println("Student have been delete succesfully\n");
         } else {
             updateStudent(studentChoosen.getId());
+            System.out.println("Student have been update succesfully\n");
         }
     }
-    
-    public void updateStudent(String id) throws Exception{
-        studentInputer = new StudentInputer();     
-        try {
-            Student s = studentInputer.inputStudentToAdd();
-            studentManager.updateCandidate(id, s);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+
+    public void updateStudent(String id) throws Exception {
+        studentInputer = new StudentInputer();
+        do {
+            try {
+                Student s = studentInputer.inputStudentToAdd();
+                studentManager.updateCandidate(id, s);
+                break;
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+            }
+        } while (TextUtility.pressYNtoContinue("Do you want to update again?(Y/N)"));
+
+    }
+
+    public void displayReport() {
+        for (Report report : studentManager.reportStudent()) {
+            System.out.println(report);
         }
     }
-    
+
     public void initializationStudent() throws Exception {
         studentManager.addStudent(new Student("HE176601", "Truong Quang Tung", 3, "Java"));
         studentManager.addStudent(new Student("HE176601", "Truong Quang Tung", 3, ".Net"));
         studentManager.addStudent(new Student("HE176601", "Truong Quang Tung", 2, "Java"));
-        studentManager.addStudent(new Student("He170599", "Vu Tuan Linh", 1, "Java"));
-        studentManager.addStudent(new Student("He170599", "Vu Tuan Linh", 1, ".Net"));
-        studentManager.addStudent(new Student("Hs163301", "Tran Trung Hieu", 4, "C/C++"));
-        studentManager.addStudent(new Student("Hs163369", "Vu Duc Dat", 4, "C/C++"));
-        studentManager.addStudent(new Student("Hs163369", "Vu Duc Dat", 3, ".Net"));
+        studentManager.addStudent(new Student("He176602", "Truong Tuan Linh", 1, "Java"));
+        studentManager.addStudent(new Student("He176602", "truong Tuan Linh", 1, ".Net"));
+        studentManager.addStudent(new Student("Hs176603", "Tran Tuan Hieu", 4, "C/C++"));
+        studentManager.addStudent(new Student("Hs176604", "Vu tuan Dat", 4, "C/C++"));
+        studentManager.addStudent(new Student("Hs176604", "Vu tuan Dat", 3, ".Net"));
         studentManager.addStudent(new Student("He176601", "Truong Quang Tung", 4, "Java"));
     }
 }

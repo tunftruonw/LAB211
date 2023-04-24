@@ -86,7 +86,32 @@ public class StudentManager {
     }
     
     public ArrayList<Report> reportStudent(){
-        
+        ArrayList<Report> reportList = new ArrayList<>();
+        for (Student s1 : listStudent) {
+            int totalCourse = 0;
+            String id1 = s1.getId();
+            String course1 = s1.getCourseName();
+            for (Student s2 : listStudent) {
+                String id2 = s2.getId();
+                String course2 = s2.getCourseName();
+                if (id1.equalsIgnoreCase(id2)&&course1.equalsIgnoreCase(course2)){
+                    totalCourse++;
+                }
+            }
+            if(!duplicateReport(reportList, id1, course1)){
+                reportList.add(new Report(id1, s1.getStudentName(), course1, totalCourse));
+            }
+        }
+        return reportList;
+    }
+    
+    private boolean duplicateReport (ArrayList<Report> reportList, String id, String course){
+        for (Report report : reportList) {
+            if(report.getId().equalsIgnoreCase(id) && report.getCourseName().equalsIgnoreCase(course)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Student updateCandidate(String id, Student s) throws Exception {
@@ -94,6 +119,12 @@ public class StudentManager {
         if (index != -1) {
             if(checkDuplicate(s)){
                 throw new Exception("This student is already existed");
+            }
+            for (Student student : listStudent) {
+                if (student.getId().equalsIgnoreCase(id)){
+                    student.setId(s.getId());
+                    student.setStudentName(s.getStudentName());
+                }
             }
             return listStudent.set(index, s);
         }
@@ -103,7 +134,6 @@ public class StudentManager {
     public Student deleteCandidate(String id) throws Exception {
         int index = searchById(id);
         if (index != -1) {
-            System.out.println("Student deleted successfully");
             return listStudent.remove(index);
             //remove candidate by index
         }
