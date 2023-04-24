@@ -80,7 +80,7 @@ public class CandidateManagerController {
         String name = TextUtility.getNonEmptyString("Input andidate name (First name or Last name) :");
         int type = TextUtility.getInt("Input type of candidate (0: Experience, 1: Fresher, 2: Intern): ", "Please enter an integer number", "Integer number must in range 0-2", 0, 2);
         ArrayList<Candidate> listFound = candidateManager.searchByNameAndType(name, Candidate.CandidateType.getTypeByInt(type));
-        if (listFound.isEmpty()){
+        if (listFound.isEmpty()) {
             System.out.println("\nNo candidate found\n");
         } else {
             System.out.println("\nFound List:");
