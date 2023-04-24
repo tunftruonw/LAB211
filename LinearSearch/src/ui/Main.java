@@ -27,7 +27,7 @@ public class Main {
             if (foundIndex.length == 0) {
                 System.out.println("Can't found " + search);
             } else {
-                System.out.println("Sorted Array: ");
+                System.out.println("The array: ");
                 ArrayUtils.displayArray(arr);
                 System.out.print("Found " + search + " at indexs: ");
                 ls.displayFoundIndex(foundIndex);
