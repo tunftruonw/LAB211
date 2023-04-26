@@ -29,21 +29,24 @@ public class StudentManager {
                 && s1.getCourseName().equalsIgnoreCase(s2.getCourseName());
     }
 
-    private boolean checkDuplicate(Student student) {
+    private boolean checkDuplicate(Student student, boolean isUpdate) {
         for (Student s : listStudent) {
             if (isSameStudent(s, student)) {
                 return true;
             }
-            if (s.getId().equalsIgnoreCase(student.getId())
-                    && !s.getStudentName().equalsIgnoreCase(student.getStudentName())) {
-                return true;
+            if (!isUpdate) {
+                if (s.getId().equalsIgnoreCase(student.getId())
+                && !s.getStudentName().equalsIgnoreCase(student.getStudentName())) {
+            return true;
+        }
             }
+            
         }
         return false;
     }
 
     public boolean addStudent(Student s) throws Exception {
-        if (!checkDuplicate(s)) {
+        if (!checkDuplicate(s, false)) {
             return listStudent.add(s);
         }
         throw new Exception("This student is already exist");
@@ -84,8 +87,8 @@ public class StudentManager {
         }
         throw new Exception("Student code doesn’t exist");
     }
-    
-    public ArrayList<Report> reportStudentByArrayList(){
+
+    public ArrayList<Report> reportStudentByArrayList() {
         ArrayList<Report> reportList = new ArrayList<>();
         for (Student s1 : listStudent) {
             int totalCourse = 0;
@@ -94,21 +97,21 @@ public class StudentManager {
             for (Student s2 : listStudent) {
                 String id2 = s2.getId();
                 String course2 = s2.getCourseName();
-                if (id1.equalsIgnoreCase(id2)&&course1.equalsIgnoreCase(course2)){
+                if (id1.equalsIgnoreCase(id2) && course1.equalsIgnoreCase(course2)) {
                     totalCourse++;
                 }
             }
-            if(!duplicateReport(reportList, id1, course1)){
+            if (!duplicateReport(reportList, id1, course1)) {
                 reportList.add(new Report(id1, s1.getStudentName(), course1, totalCourse));
             }
         }
         return reportList;
     }
-    
+
     public ArrayList<Report> reportStudentByHashMap() {
         HashMap<String, Report> tmp = new HashMap<>();
         for (Student s : listStudent) {
-            String key = s.getId().toUpperCase()+ "|" + s.getCourseName();
+            String key = s.getId().toUpperCase() + "|" + s.getCourseName();
             Report r = tmp.get(key);
             if (r == null) {
                 tmp.put(key, new Report(s.getId(), s.getStudentName(), s.getCourseName(), 1));
@@ -122,10 +125,10 @@ public class StudentManager {
         }
         return reportList;
     }
-    
-    private boolean duplicateReport (ArrayList<Report> reportList, String id, String course){
+
+    private boolean duplicateReport(ArrayList<Report> reportList, String id, String course) {
         for (Report report : reportList) {
-            if(report.getId().equalsIgnoreCase(id) && report.getCourseName().equalsIgnoreCase(course)){
+            if (report.getId().equalsIgnoreCase(id) && report.getCourseName().equalsIgnoreCase(course)) {
                 return true;
             }
         }
@@ -135,11 +138,11 @@ public class StudentManager {
     public Student updateStudent(String id, Student s) throws Exception {
         int index = searchById(id);
         if (index != -1) {
-            if(checkDuplicate(s)){
+            if (checkDuplicate(s, true)) {
                 throw new Exception("This student is already existed");
             }
             for (Student student : listStudent) {
-                if (student.getId().equalsIgnoreCase(id)){
+                if (student.getId().equalsIgnoreCase(id)) {
                     student.setId(s.getId());
                     student.setStudentName(s.getStudentName());
                 }
@@ -153,7 +156,7 @@ public class StudentManager {
         int index = searchById(id);
         if (index != -1) {
             return listStudent.remove(index);
-            //remove candidate by index
+            // remove candidate by index
         }
         throw new Exception("Student does not exist");
     }
