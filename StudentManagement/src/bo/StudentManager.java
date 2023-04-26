@@ -6,8 +6,8 @@ package bo;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import model.Student;
 import java.util.HashMap;
+import model.Student;
 import model.Report;
 
 /**
@@ -85,7 +85,7 @@ public class StudentManager {
         throw new Exception("Student code doesn’t exist");
     }
     
-    public ArrayList<Report> reportStudent(){
+    public ArrayList<Report> reportStudentByArrayList(){
         ArrayList<Report> reportList = new ArrayList<>();
         for (Student s1 : listStudent) {
             int totalCourse = 0;
@@ -105,6 +105,24 @@ public class StudentManager {
         return reportList;
     }
     
+    public ArrayList<Report> reportStudentByHashMap() {
+        HashMap<String, Report> tmp = new HashMap<>();
+        for (Student s : listStudent) {
+            String key = s.getId().toUpperCase()+ "|" + s.getCourseName();
+            Report r = tmp.get(key);
+            if (r == null) {
+                tmp.put(key, new Report(s.getId(), s.getStudentName(), s.getCourseName(), 1));
+            } else {
+                r.setTotalCourse(r.getTotalCourse() + 1);
+            }
+        }
+        ArrayList<Report> reportList = new ArrayList<>();
+        for (Report value : tmp.values()) {
+            reportList.add(value);
+        }
+        return reportList;
+    }
+    
     private boolean duplicateReport (ArrayList<Report> reportList, String id, String course){
         for (Report report : reportList) {
             if(report.getId().equalsIgnoreCase(id) && report.getCourseName().equalsIgnoreCase(course)){
@@ -114,7 +132,7 @@ public class StudentManager {
         return false;
     }
 
-    public Student updateCandidate(String id, Student s) throws Exception {
+    public Student updateStudent(String id, Student s) throws Exception {
         int index = searchById(id);
         if (index != -1) {
             if(checkDuplicate(s)){
@@ -131,7 +149,7 @@ public class StudentManager {
         throw new Exception("Student not found!");
     }
 
-    public Student deleteCandidate(String id) throws Exception {
+    public Student deleteStudent(String id) throws Exception {
         int index = searchById(id);
         if (index != -1) {
             return listStudent.remove(index);
