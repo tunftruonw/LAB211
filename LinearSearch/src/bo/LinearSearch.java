@@ -4,33 +4,28 @@
  */
 package bo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author tungs
  */
 public class LinearSearch {
 
-    public int[] linearSearch(int[] arr, int search) {
-        int[] index = new int[arr.length];
-        int j = 0;
+    public ArrayList<Integer> linearSearch(int[] arr, int search) {
+        ArrayList<Integer> index = new ArrayList<>();
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] == search) {
-                index[j++] = i;
-
+                index.add(i);
             }
         }
         return index;
     }
 
-    public void displayFoundIndex(int[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            if (i > 0 && arr[i] == 0) {
-                break;
-            } else if (arr[i + 1] == 0) {
-                System.out.print(arr[i]+"\n");
-            } else {
-                System.out.print(arr[i] + ", ");
-            }
+    public void displayFoundIndex(ArrayList<Integer> index) {
+        for (int i = 0; i < index.size()-1; i++) {
+                System.out.print(index.get(i).intValue() + ", ");
         }
+        System.out.print(index.get(index.size()-1).intValue()+"\n");
     }
 }
